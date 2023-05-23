@@ -1,0 +1,171 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Casos Covid</title>
+  <link rel="stylesheet" href="js/leaflet.css">
+ <link rel="stylesheet" href="dist/MarkerCluster.css">
+  <link rel="stylesheet" href="dist/MarkerCluster.Default.css">
+
+
+  <script src="js/leaflet.js"></script>
+   <script src="dist/leaflet.markercluster.js"></script>
+  <style>
+
+    #map{ height: 100% }
+    .legend {
+    line-height: 18px;
+    color: #555;
+}
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.7;
+}
+  </style>
+</head>
+<body>
+
+  <div id="map"></div>
+  <div id="legend"></div>
+
+  
+  
+   <script src= "data/casospor10khab.geojson"> </script>
+   <script src= "data/casos.geojson"> </script>
+  
+
+  <script>
+
+  // iniciar o mapa
+  var map = L.map('map').setView([38.749, -9.155], 13);
+
+  // carregar a layer
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	maxZoom: 19,
+	attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+var wmsLayer = L.tileLayer.wms('http://localhost:8080/geoserver/websig/wms?', {
+    layers: 'websig%3ACONCELHOS'
+}).addTo(map);
+
+
+
+
+
+
+
+	function getcor10k(d) {
+	
+		return d > 8 ? '#d7191c' :
+			d > 4 ? '#fec931' :
+			d > 2 ? '#c4e687' :
+			d = 0 ? '#1a9641' :
+			d > 0 ? '#1a9641' :
+				'#1a9641';
+			
+			
+	
+	
+	}
+
+	function estilo10k(feature) {
+		return {
+			weight: 1,
+			opacity: 1,
+			color: 'white',
+			dashArray: '3',
+			fillOpacity: 1.0,
+			fillColor: getcor10k(feature.properties.Casos_23_1)
+			
+		
+		
+		};
+
+
+	//escala	
+L.control.scale().addTo(map);
+
+setInterval(function(){
+    map.setView([0, 0]);
+    setTimeout(function(){
+        map.setView([60, 0]);
+    }, 2000);
+}, 4000);
+
+	}
+	function zoomToFeature(e) {
+		map.fitBounds(e.target.getBounds());
+	}
+	
+	function emcadaConcelho(feature,layer) {
+		layer.on({
+			click: zoomToFeature
+		});
+	}
+	
+	function onEachFeature(feature, layer) {
+        	layer.bindPopup('Concelho: ' + feature.properties.Concelho +'<br>' + 'População: ' +feature.properties.POP_2018);
+	    }
+     	var casos10klayer = L.geoJSON(casos10kData,{
+                    style: estilo10k,
+                    onEachFeature: emcadaConcelho
+     	}).addTo(map);
+     var marcadores = L.markerClusterGroup();
+	var casospontoLayer = L.geoJSON(casosponto,{
+		//onEachFeature: function(feature,layer) {layer.bindPopup(feature.properties.1);}
+	});
+	marcadores.addLayer(casospontoLayer);
+	map.addLayer(marcadores);
+
+ L.control.scale().addTo(map);
+
+
+
+ //legenda
+ 
+ var legend = L.control({ position: 'bottomright' });
+
+legend.onAdd = function (map) {
+  var div = L.DomUtil.create('div', 'legend');
+  var labels = ['0', '2', '4', '8+'];
+  var colors = ['#1a9641', '#c4e687', '#fec931', '#d7191c'];
+
+  for (var i = 0; i < labels.length; i++) {
+    div.innerHTML +=
+      '<i style="background:' + colors[i] + '"></i> ' +
+      labels[i] + '<br>';
+  }
+
+  return div;
+};
+
+legend.addTo(map);
+
+
+//layer controls
+
+
+var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '© OpenStreetMap'
+}).addTo(map);
+
+var baseMaps = {
+    "OpenStreetMap": osm
+    
+};
+
+
+var overlayMaps = {
+    "Casos covid por 10mil hab": casos10klayer
+
+};
+
+
+var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+  </script>
+
+</body></html>
