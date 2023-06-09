@@ -26,13 +26,13 @@ O código HTML está estruturado da seguinte maneira:
 
 - `estilo10k(feature)`: Define o estilo dos polígonos no mapa com base nos dados de casos de Covid-19 por 10.000 habitantes.
 
-## Camadas de Dados
+## Layers
 
 - `L.geoJSON(casos10kData)`: Cria uma layer do tipo polígonos no mapa usando dados GeoJSON de casos de Covid-19 por 10.000 habitantes.
 
 - `L.markerClusterGroup()`: Cria um grupo de clusters de marcadores para agrupar os marcadores relacionados aos casos de Covid-19, criando pontos com o número de casos que se agrupam.
 
-## Controles e Legenda
+## Controlos e Legenda
 
 - `L.control.scale()`: Adiciona uma escala ao mapa.
 
