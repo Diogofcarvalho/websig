@@ -18,7 +18,7 @@ O código HTML está estruturado da seguinte maneira:
 
 - `L.tileLayer`: Adiciona uma camada  do OpenStreetMap ao mapa.
 
-- `L.tileLayer.wms`: Adiciona uma camada WMS do Geoserver ao mapa.
+- `L.tileLayer.wms`: Adiciona uma camada WMS do Geoserver ao mapa, para este caso foi utilizada a shapefile dos concelhos
 
 ## Estilos e Cores
 
