@@ -22,6 +22,15 @@
     margin-right: 8px;
     opacity: 0.7;
 }
+
+.info {
+            background-color: white;
+            padding: 6px 8px;
+            font: 14px/16px Arial, Helvetica, sans-serif;
+            background: white;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
   </style>
 </head>
 <body>
@@ -29,8 +38,7 @@
   <div id="map"></div>
   <div id="legend"></div>
 
-  
-  
+ 
    <script src= "data/casospor10khab.geojson"> </script>
    <script src= "data/casos.geojson"> </script>
   
@@ -50,6 +58,7 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
 var wmsLayer = L.tileLayer.wms('http://localhost:8080/geoserver/websig/wms?', {
     layers: 'websig%3ACONCELHOS'
 }).addTo(map);
+
 
 
 
@@ -85,6 +94,7 @@ var wmsLayer = L.tileLayer.wms('http://localhost:8080/geoserver/websig/wms?', {
 		};
 
 
+
 	//escala	
 L.control.scale().addTo(map);
 
@@ -107,18 +117,26 @@ setInterval(function(){
 	}
 	
 	function onEachFeature(feature, layer) {
-        	layer.bindPopup('Concelho: ' + feature.properties.Concelho +'<br>' + 'População: ' +feature.properties.POP_2018);
-	    }
+        	layer.bindPopup('Concelho: ' + feature.properties.Concelho + '<br>' + 'População: ' +feature.properties.POP_2018);
+	    };
      	var casos10klayer = L.geoJSON(casos10kData,{
                     style: estilo10k,
-                    onEachFeature: emcadaConcelho
+                    onEachFeature: onEachFeature
      	}).addTo(map);
      var marcadores = L.markerClusterGroup();
-	var casospontoLayer = L.geoJSON(casosponto,{
-		//onEachFeature: function(feature,layer) {layer.bindPopup(feature.properties.1);}
-	});
-	marcadores.addLayer(casospontoLayer);
-	map.addLayer(marcadores);
+	
+var casospontoLayer = L.geoJSON(casosponto, {
+    onEachFeature: function (feature, layer) {
+        var mes1Value = parseInt(feature.properties.mes1); // Converte para número inteiro
+        // Ou use parseFloat() se o valor for decimal
+
+        console.log(mes1Value); // Depurar o valor convertido
+
+        layer.bindPopup(mes1Value.toString()); // Converte novamente para string antes de exibir no popup
+    }
+});
+marcadores.addLayer(casospontoLayer);
+map.addLayer(marcadores);
 
  L.control.scale().addTo(map);
 
@@ -164,8 +182,54 @@ var overlayMaps = {
 
 };
 
-
+//Layer control
 var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
+
+var info = L.control();
+info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info');
+    this.update();
+    return this._div;
+};
+info.update = function (props) {
+    this._div.innerHTML = '<h4>Número de casos Covid por concelho </h4>' + (props ?
+        '<b>' + props.Concelho + '</b><br />' + props.Casos_23_1 + ' Casos por 10 mil habitantes'
+        : 'Selecione um concelho');
+};
+info.addTo(map);
+
+
+
+
+//Função Layer
+function highlightFeature(e) {
+	var layer = e.target;
+	layer.setStyle({
+		weight: 5,
+		color: '#666' ,
+		dashArray: '' , 
+		fillOpacity: 0.7
+	});
+	layer.bringToFront();
+	info.update(layer.feature.properties);
+}
+function resetHighlight(e) {
+	casos10klayer.resetStyle(e.target);
+	info.update();
+}
+function zoomToFeature(e) {
+	map.fitBounds(e.target.getBounds());
+}
+function onEachFeature (feature,layer) {
+	layer.on({
+		mouseover: highlightFeature,
+		mouseout: resetHighlight,
+		click: zoomToFeature
+	});
+}
   </script>
+}
+}
 
 </body></html>
+
