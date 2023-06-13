@@ -41,4 +41,16 @@ O código HTML está estruturado da seguinte forma:
 - `L.control({ position: 'bottomright' })`: Cria uma legenda na parte inferior direita do mapa.
 
 
+## O mapa contém as seguintes funções
+- Iniciação do mapa: O mapa é inicializado usando o Leaflet e definido para ser exibido no a caixa com o ID "map".
+- Carregar as layers base: A layer do OpenStreetMap é carregada e adicionada ao mapa.
+- Layer dos concelhos (CONCELHOS): Uma layer com os concelhos é carregada a partir de um servidor WMS, que vai buscar informação ao GeoServer e adicionada ao mapa.
+- Funções para estilo e interação com a layer de casos por 10 mil habitantes: As funções são definidas para criar um estilo e um conjunto de ações com a layer de casos por 10 mil habitantes sendo que estas funções determinam a cor dos polígonos com base no número de casos e definem ações como destacar o polígono ao passar por cima com o rato.
+- Criação da layer de casos por 10 mil habitantes: A layer de casos por 10 mil habitantes é criada a partir de dados GeoJSON onde também é definido um estilo e um conjunto de ações usando as funções definidas anteriormente. A camada é adicionada ao mapa.
+- Criação de marcadores de casos: Marcadores de casos individuais são criados a partir de dados GeoJSON e agrupados usando a extensão Leaflet.MarkerCluster. Os marcadores são adicionados ao mapa.
+- Criação da legenda: Uma legenda é criada e pode ser visualizada no canto inferior direito do mapa.
+- Controlos da layer: Controlos de layer são criados para alternar entre a layer base e a de sobreposição.
+- Controlo de informações: Um controlo de informações é criado para exibir informações sobre o concelho selecionado.
+- Funções para destaque e zoom: Funções definidas para destacar polígonos ao passar o rato por cima e ajustar.
+
 
