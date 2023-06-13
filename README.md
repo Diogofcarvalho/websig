@@ -4,7 +4,7 @@ Este código HTML foi utilizado para a criação de um mapa sobre os casos de Co
 
 ## Estrutura do Código
 
-O código HTML está estruturado da seguinte maneira:
+O código HTML está estruturado da seguinte forma:
 
 - Na parte `<head>`, estão todas  as bibliotecas utilizadas e estilos necessários para a criação do mapa.
 
