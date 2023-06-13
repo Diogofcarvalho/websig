@@ -42,7 +42,7 @@ O código HTML está estruturado da seguinte forma:
 
 
 ## O mapa contém as seguintes funções
-- Iniciação do mapa: O mapa é inicializado usando o Leaflet e definido para ser exibido no a caixa com o ID "map".
+- Iniciação do mapa: O mapa é inicializado usando o Leaflet e definido para ser exibido na caixa com o ID "map".
 - Carregar as layers base: A layer do OpenStreetMap é carregada e adicionada ao mapa.
 - Layer dos concelhos (CONCELHOS): Uma layer com os concelhos é carregada a partir de um servidor WMS, que vai buscar informação ao GeoServer e adicionada ao mapa.
 - Funções para estilo e interação com a layer de casos por 10 mil habitantes: As funções são definidas para criar um estilo e um conjunto de ações com a layer de casos por 10 mil habitantes sendo que estas funções determinam a cor dos polígonos com base no número de casos e definem ações como destacar o polígono ao passar por cima com o rato.
