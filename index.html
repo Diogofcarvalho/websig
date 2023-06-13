@@ -127,13 +127,12 @@ setInterval(function(){
 	
 var casospontoLayer = L.geoJSON(casosponto, {
     onEachFeature: function (feature, layer) {
-        var mes1Value = parseInt(feature.properties.mes1); // Converte para número inteiro
-        // Ou use parseFloat() se o valor for decimal
+        var mes1Value = parseInt(feature.properties.mes1); 
+      
 
-        console.log(mes1Value); // Depurar o valor convertido
+        console.log(mes1Value);
 
-        layer.bindPopup(mes1Value.toString()); // Converte novamente para string antes de exibir no popup
-    }
+        layer.bindPopup(mes1Value.toString()); 
 });
 marcadores.addLayer(casospontoLayer);
 map.addLayer(marcadores);
